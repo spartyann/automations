@@ -88,8 +88,8 @@ switch ($event->type) {
 			$invoice = DoliApi::createInvoices($tiers->id, $invoiceLines, $timestamp);
 			$payment = DoliApi::createPayment($invoice->id, $timestamp, 6, 'Paiement Stripe - ' . $paymentIntent->id . ' - Frais: ' . $fee, $paymentIntent->id);
 
-			SlackHelper::sendMessage("Facture créée", "La facture a bien été créée.");
-			
+			SlackHelper::sendMessage("Facture ajoute", "La facture a bien été créée.");
+
 		} catch (\Throwable $ex)
 		{
 			SlackHelper::sendError('Erreur', $ex->getMessage());

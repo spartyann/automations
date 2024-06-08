@@ -3,6 +3,7 @@ namespace App;
 
 use Config\Config;
 
+
 class DoliApi {
 
 	public static function callAPI($method, $url, object|array|bool $data = false)
@@ -130,7 +131,7 @@ class DoliApi {
 			'socid' => $iv->socid,
 			'date' => $dt,
 			'total_ttc' => $iv->total_ttc,
-			'lines' => array_map("formatSupplierInvoiceLine", $iv->lines),
+			'lines' => array_map("\App\DoliApi::formatSupplierInvoiceLine", $iv->lines),
 
 			'paid' => $iv->paid,
 		];
@@ -160,7 +161,7 @@ class DoliApi {
 			'mode_reglement_id' => $iv->mode_reglement_id,
 			'cond_reglement_id' => $iv->cond_reglement_id,
 			'total_ttc' => $iv->total_ttc,
-			'lines' => array_map("formatClientInvoiceLine", $iv->lines),
+			'lines' => array_map("\App\DoliApi::formatClientInvoiceLine", $iv->lines),
 			'totalpaid' => $iv->totalpaid,
 			'socid' => $iv->socid,
 
@@ -175,11 +176,11 @@ class DoliApi {
 	// ************ Clients
 
 	public static function getClientsById(){
-		return Tools::indexArray(array_map("formatClientThirdParty", self::getThirdParties()), 'id');
+		return Tools::indexArray(array_map("\App\DoliApi::formatClientThirdParty", self::getThirdParties()), 'id');
 	}
 
 	public static function getClientsByEmail(){
-		return Tools::indexArray(array_map("formatClientThirdParty", self::getThirdParties()), 'email');
+		return Tools::indexArray(array_map("\App\DoliApi::formatClientThirdParty", self::getThirdParties()), 'email');
 	}
 
 	public static function createClient($name, $email = '', $phone = '', $address = '', $zip = '', $town = ''){
@@ -232,7 +233,7 @@ class DoliApi {
 
 
 	public static function getInvoicesById(){
-		return Tools::indexArray(array_map("formatClientInvoice", self::getInvoices()), 'id');
+		return Tools::indexArray(array_map("\App\DoliApi::formatClientInvoice", self::getInvoices()), 'id');
 	}
 
 	public static function createSimpleInvoices($clientId, $description, $priceUT, $tva, $qty, $date, $modelPdf = null){
@@ -311,7 +312,7 @@ class DoliApi {
 
 		//dd($res);
 
-		return Tools::indexArray(array_map("formatSupplierInvoice", $res), 'id');
+		return Tools::indexArray(array_map("\App\DoliApi::formatSupplierInvoice", $res), 'id');
 	}
 
 

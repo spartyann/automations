@@ -2,7 +2,6 @@
 
 
 require_once('vendor/autoload.php');
-require_once('tools.php');
 
 use App\DoliApi;
 use App\Notifications\SlackHelper;
@@ -15,7 +14,7 @@ if (Tools::isCommandLineInterface() == false)
 	exit(0);
 }
 
-//SlackHelper::sendMessage("testdf gsdg", "msg dfgsdfgsdfg sdfg sd");
+SlackHelper::sendError("testdf gsdg", "msg dfgsdfgsdfg sdfg sd");
 
 
 //$stripe = new \Stripe\StripeClient(Config::STRIPE_SECRET_KEY);
