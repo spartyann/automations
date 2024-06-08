@@ -1,0 +1,11 @@
+<?php
+
+define('DOLI_API_KEY', 'xxxx');
+define('DOLI_Authorization', 'Basic xxx');
+define('DOLI_DEFAULT_MODEL_PDF', 'generic_invoice_odt:xxxxxx');
+define('DOLI_AccountId', 0);
+define('DOLI_STRIPE_TP_ID', 20);
+
+
+define('STRIPE_SECRET_KEY', 'xxxx');
+define('STRIPE_ENDPOINT_SECRET', 'xxxx');
