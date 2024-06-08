@@ -26,6 +26,11 @@ class SlackHelper
 		return $string;
 	}
 
+	public static function sendError(string $title, string $msg)
+	{
+		self::sendMessage($title, $msg, Config::NOTIF_ERROR_SLACK_WEBHOOK_URL);
+	}
+
 	public static function sendMessage(string $title, string $msg, string $hookUrl = null)
 	{
 		$title = preg_replace('/[^A-Za-z0-9\-\_ ]/', '', $title);

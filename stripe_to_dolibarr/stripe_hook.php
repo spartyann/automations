@@ -12,19 +12,18 @@
 // 3) Run the server on http://localhost:4242
 //   php -S localhost:4242
 
+use App\DoliApi;
+use App\Notifications\SlackHelper;
+use Config\Config;
 
 require_once('vendor/autoload.php');
-require_once 'vars.php';
-require_once('tools.php');
-require_once('html_to_text.php');
-require_once('doli_api.php');
 
 // The library needs to be configured with your account's secret key.
 // Ensure the key is kept out of any version control system you might be using.
-$stripe = new \Stripe\StripeClient(STRIPE_SECRET_KEY);
+$stripe = new \Stripe\StripeClient(Config::STRIPE_SECRET_KEY);
 
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
-$endpoint_secret = STRIPE_ENDPOINT_SECRET;
+$endpoint_secret = Config::STRIPE_ENDPOINT_SECRET;
 
 $payload = @file_get_contents('php://input');
 $sig_header = $_SERVER['HTTP_STRIPE_SIGNATURE'];
@@ -85,14 +84,15 @@ switch ($event->type) {
 
 		try {
         
-			$tiers = getOrCreateClient($name, $email, '', '', '', '');
-			$invoice = doliCreateInvoices($tiers->id, $invoiceLines, $timestamp);
-			$payment = doliCreatePayment($invoice->id, $timestamp, 6, 'Paiement Stripe - ' . $paymentIntent->id . ' - Frais: ' . $fee, $paymentIntent->id);
+			$tiers = DoliApi::getOrCreateClient($name, $email, '', '', '', '');
+			$invoice = DoliApi::createInvoices($tiers->id, $invoiceLines, $timestamp);
+			$payment = DoliApi::createPayment($invoice->id, $timestamp, 6, 'Paiement Stripe - ' . $paymentIntent->id . ' - Frais: ' . $fee, $paymentIntent->id);
 
+			SlackHelper::sendMessage("Facture créée", "La facture a bien été créée.");
 			
 		} catch (\Throwable $ex)
 		{
-
+			SlackHelper::sendError('Erreur', $ex->getMessage());
 		}
     }
 }

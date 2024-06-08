@@ -19,14 +19,12 @@
 
 <?php
 
+use App\DoliApi;
+
 error_reporting(E_ALL);
  ini_set("display_errors", 1);
 
 require_once('vendor/autoload.php');
-require_once 'vars.php';
-require_once('tools.php');
-require_once('html_to_text.php');
-require_once('doli_api.php');
 
 $message = '';
 $error = '';
@@ -61,9 +59,9 @@ if (count($_POST) > 2)
     	if (trim($name) != '' && trim($email) != '' && trim($invoice_desc) != '')
     	{
         	$timestamp = (new \DateTime($invoice_date))->getTimestamp();
-        	$tiers = getOrCreateClient($name, $email, $phone, $address, $zip, $town);
-        	$invoice = doliCreateSimpleInvoices($tiers->id, $invoice_desc, $invoice_price_ut, $invoice_tva, $invoice_qty, $timestamp);
-        	$payment = doliCreatePayment($invoice->id, $timestamp, $payment_mode, $payment_comment, $payment_num_payment, $payment_chqemetteur, $payment_chqbank);
+        	$tiers = DoliApi::getOrCreateClient($name, $email, $phone, $address, $zip, $town);
+        	$invoice = DoliApi::createSimpleInvoices($tiers->id, $invoice_desc, $invoice_price_ut, $invoice_tva, $invoice_qty, $timestamp);
+        	$payment = DoliApi::createPayment($invoice->id, $timestamp, $payment_mode, $payment_comment, $payment_num_payment, $payment_chqemetteur, $payment_chqbank);
     	    $message = "C'est bon !";
     	}
     }
