@@ -48,7 +48,7 @@ class SlackHelper
 		curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
 		curl_setopt( $ch, CURLOPT_POST, 1);
 		curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode([
-				"text" => '*' . $title . "* \n\n " . $msg
+				"text" => '*' . $title . "* \n " . $msg
 		]));
 		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1);
 		curl_setopt( $ch, CURLOPT_HEADER, 0);
