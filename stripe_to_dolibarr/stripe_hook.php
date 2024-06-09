@@ -14,6 +14,7 @@
 
 use App\DoliApi;
 use App\Notifications\SlackHelper;
+use App\WFDoliStripe;
 use Config\Config;
 
 require_once('vendor/autoload.php');
@@ -55,41 +56,8 @@ switch ($event->type) {
     
     if ($session->payment_status == "paid")
     {
-    
-        $name = $session->customer_details->name;
-        $email = $session->customer_details->email;
-        $price = $session->amount_total / 100;
-        $timestamp = $session->created;
-        
-		$paymentIntent = $stripe->paymentIntents->retrieve($session->payment_intent);
-		$charge = $stripe->charges->retrieve($paymentIntent->latest_charge);
-		$balanceTransaction = $stripe->balanceTransactions->retrieve($charge->balance_transaction, []);
-
-		$fee = $balanceTransaction->fee / 100;
-        
-        //echo "$name\n$email\n$price\n\n";
-        
-        $sessionItems = $stripe->checkout->sessions->allLineItems($session->id,[]);
-        
-        $invoiceLines = [];
-        foreach($sessionItems as $item)
-        {
-            $invoiceLines[] = [
-                'desc' => $item->description,
-                'subprice' => $item->amount_total / 100,
-                'tva_tx' => 0,
-                'qty' => 1
-            ];
-        }
-
 		try {
-        
-			$tiers = DoliApi::getOrCreateClient($name, $email, '', '', '', '');
-			$invoice = DoliApi::createInvoices($tiers->id, $invoiceLines, $timestamp);
-			$payment = DoliApi::createPayment($invoice->id, $timestamp, 6, 'Paiement Stripe - ' . $paymentIntent->id . ' - Frais: ' . $fee, $paymentIntent->id);
-
-			SlackHelper::sendMessage("Facture ajoute", "La facture a bien été créée.");
-
+			WFDoliStripe::processStripePayment($stripe, $session);
 		} catch (\Throwable $ex)
 		{
 			SlackHelper::sendError('Erreur', $ex->getMessage());

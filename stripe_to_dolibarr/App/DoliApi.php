@@ -8,7 +8,8 @@ class DoliApi {
 
 	public static function callAPI($method, $url, object|array|bool $data = false)
 	{
-		$url = 'https://erp.tassy.pro/api/index.php/' . $url;
+
+		$url = Config::DOLI_URL . '/api/index.php/' . $url;
 
 		$curl = curl_init();
 
@@ -54,15 +55,20 @@ class DoliApi {
 
 		$result = curl_exec($curl);
 
-		if ($result === false)
-		{
-			echo curl_error($curl);
-			exit(1);
-		}
-
+		// Error
+		if ($result === false) throw new \Exception(curl_error($curl));
+		
 		curl_close($curl);
 
-		return json_decode($result);
+		$obj = json_decode($result);
+
+		// Error
+		if (isset($obj->error))
+		{
+			throw new \Exception(json_encode($obj->error));
+		}
+
+		return $obj;
 	}
 
 	//
@@ -126,6 +132,7 @@ class DoliApi {
 		return (object)[
 			'id' => intval($iv->id),
 			'ref' => $iv->ref,
+			'ref_supplier' => $iv->ref,
 			'timestamp' => $iv->date,
 			'status' => $iv->status,
 			'socid' => $iv->socid,
@@ -205,6 +212,7 @@ class DoliApi {
 	public static function getThirdPartyByEmail($email)
 	{
 		$tp = self::callAPI('GET', 'thirdparties/email/' . rawurlencode($email));
+
 		if (isset($tp->error)) return null;
 
 		return self::formatClientThirdParty($tp);
@@ -312,17 +320,17 @@ class DoliApi {
 
 		//dd($res);
 
-		return Tools::indexArray(array_map("\App\DoliApi::formatSupplierInvoice", $res), 'id');
+		return array_map("\App\DoliApi::formatSupplierInvoice", $res);
 	}
 
 
 
 	public static function supplierInvoicesAddLine($inId, $description, $priceUT, $tva = 0, $qty = 1){
 		self::callAPI('POST', "supplierinvoices/$inId/lines", [
-			'subprice' => $priceUT,
+			'pu_ht' => $priceUT,
 			'qty' => $qty,
 			'tva_tx' => $tva,
-			'desc' => $description
+			'description' => $description
 		] );
 	}
 
@@ -331,9 +339,10 @@ class DoliApi {
 		self::callAPI('POST', "supplierinvoices/$inId/validate");
 	}
 
-	public static function createSupplierInvoices($clientId, $date){
+	public static function createSupplierInvoices($clientId, $date, $refSupplier){
 		$id = self::callAPI('POST', 'supplierinvoices', [
 			//'mode_reglement_id' => "3",
+			'ref_supplier' => $refSupplier,
 			'cond_reglement_id' => "0",
 			'socid' => $clientId,
 			'date' => $date,
@@ -349,7 +358,7 @@ class DoliApi {
 
 		$id = self::callAPI('POST', "supplierinvoices/$invoiceId/payments", [
 			'datepaye' => $date,
-			'paymentid' => $paymentMode,
+			'payment_mode_id' => $paymentMode,
 			'closepaidinvoices' => "yes",
 			'accountid' => Config::DOLI_AccountId,
 			'num_payment' => $numPayment,

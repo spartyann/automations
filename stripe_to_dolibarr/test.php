@@ -6,6 +6,7 @@ require_once('vendor/autoload.php');
 use App\DoliApi;
 use App\Notifications\SlackHelper;
 use App\Tools;
+use App\WFDoliStripe;
 use Config\Config;
 
 if (Tools::isCommandLineInterface() == false) 
@@ -14,13 +15,36 @@ if (Tools::isCommandLineInterface() == false)
 	exit(0);
 }
 
-SlackHelper::sendError("testdf gsdg", "msg dfgsdfgsdfg sdfg sd");
+$invoiceLines= [
+	[
+		'desc' => "Acompte Formation Reiki HF",
+		'subprice' => 300,
+		'tva_tx' => 0,
+		'qty' => 1
+	],
+	[
+		'desc' => "Solde Formation Reiki HF",
+		'subprice' => 600,
+		'tva_tx' => 0,
+		'qty' => 1
+	],
+];
 
+try{
 
+	WFDoliStripe::processDoliInvoiceForStripePayment("Yann Tassy", 'tassy.yann@gmail.com', $invoiceLines, 900, time(),  "CODE STRIPE", 10.25);
+} catch (\Throwable $ex)
+{
+
+	dd($ex);
+}
+
+//SlackHelper::sendError("testdf gsdg", "msg dfgsdfgsdfg sdfg sd");
 //$stripe = new \Stripe\StripeClient(Config::STRIPE_SECRET_KEY);
 
-$inv = DoliApi::getSupplierInvoicesForTP(Config::DOLI_STRIPE_TP_ID);
+exit(0);
 
+$inv = DoliApi::getSupplierInvoicesForTP(Config::DOLI_STRIPE_STP_ID);
 
 dd($inv);
 
