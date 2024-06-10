@@ -49,7 +49,22 @@ class WFDoliStripe {
 	{
 		// Create 
 		$tiers = DoliApi::getOrCreateClient($name, $email, '', '', '', '');
-		$invoice = DoliApi::createInvoices($tiers->id, $invoiceLines, $timestamp);
+
+		// Check if an existing invoice not paid for the same price exists 
+		$lasts = array_merge(
+			DoliApi::getInvoicesForTP($tiers->id, 'draft'),
+			DoliApi::getInvoicesForTP($tiers->id, 'unpaid')
+		) ;
+		$last = $lasts[0] ?? null;
+
+		
+		if ($last == null || $last->total_ttc != $price) $invoice = DoliApi::createInvoices($tiers->id, $invoiceLines, $timestamp);
+		else
+		{
+			if ($last->status == "0") DoliApi::validateInvoice($last->id);
+			$invoice = $last;
+		}
+	
 		$payment = DoliApi::createPayment($invoice->id, $timestamp, 6, 'Paiement Stripe - ' . $paymentId . ' - Frais: ' . $fee, $paymentId);
 
 		// Stripe Invoice

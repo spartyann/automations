@@ -9,6 +9,7 @@ class DoliApi {
 	public static function callAPI($method, $url, object|array|bool $data = false)
 	{
 
+		// SWAGER: /api/index.php/explorer/
 		$url = Config::DOLI_URL . '/api/index.php/' . $url;
 
 		$curl = curl_init();
@@ -112,10 +113,10 @@ class DoliApi {
 		return (object)[
 			'id' => intval($line->id),
 			'rowid' => $line->rowid,
-			'subprice' => $line->subprice,
-			'qty' => $line->qty,
+			'subprice' => floatval($line->subprice),
+			'qty' => intval($line->qty),
 			'tva_tx' => $line->tva_tx,
-			'total_ttc' => $line->total_ttc,
+			'total_ttc' => floatval($line->total_ttc),
 			'description' => $line->description,
 			'description_text' => Html2Text::getTextFromHtml($line->description),
 
@@ -137,7 +138,7 @@ class DoliApi {
 			'status' => $iv->status,
 			'socid' => $iv->socid,
 			'date' => $dt,
-			'total_ttc' => $iv->total_ttc,
+			'total_ttc' => floatval($iv->total_ttc),
 			'lines' => array_map("\App\DoliApi::formatSupplierInvoiceLine", $iv->lines),
 
 			'paid' => $iv->paid,
@@ -149,7 +150,7 @@ class DoliApi {
 		//dd($line);
 		return (object)[
 			'id' => intval($line->id),
-			'qty' => $line->qty,
+			'qty' => intval($line->qty),
 			'tva_tx' => $line->tva_tx,
 			'pu_ht' => $line->pu_ht,
 			'pu_ttc' => $line->pu_ttc,
@@ -159,6 +160,7 @@ class DoliApi {
 	}
 
 	public static function formatClientInvoice($iv){
+
 		//return $iv;
 		return (object)[
 			'id' => intval($iv->id),
@@ -167,7 +169,7 @@ class DoliApi {
 			'date' => $iv->date,
 			'mode_reglement_id' => $iv->mode_reglement_id,
 			'cond_reglement_id' => $iv->cond_reglement_id,
-			'total_ttc' => $iv->total_ttc,
+			'total_ttc' => floatval($iv->total_ttc),
 			'lines' => array_map("\App\DoliApi::formatClientInvoiceLine", $iv->lines),
 			'totalpaid' => $iv->totalpaid,
 			'socid' => $iv->socid,
@@ -244,6 +246,21 @@ class DoliApi {
 		return Tools::indexArray(array_map("\App\DoliApi::formatClientInvoice", self::getInvoices()), 'id');
 	}
 
+	public static function getInvoicesForTP($tpId, string $status = null, $limit = 1, $sortorder = 'DESC'){
+		// $status  draft , unpaid, paid , cancelled
+		$conds = [ 
+			'sortorder' => $sortorder,
+			'limit' => $limit,
+			'thirdparty_ids' => $tpId,
+		];
+		if ($status !== null) $conds['status'] = $status;
+
+		$res = self::callAPI('GET', 'invoices',  $conds);
+
+		return array_map("\App\DoliApi::formatClientInvoice", $res);
+	}
+
+
 	public static function createSimpleInvoices($clientId, $description, $priceUT, $tva, $qty, $date, $modelPdf = null){
 		$id = self::callAPI('POST', 'invoices', [
 			'mode_reglement_id' => "6",
@@ -252,7 +269,7 @@ class DoliApi {
 			'date' => $date,
 			'lines' => [
 				[
-					'subprice' => $priceUT,
+					'subprice' => floatval($priceUT),
 					'qty' => $qty,
 					'tva_tx' => $tva,
 					'desc' => $description
@@ -276,6 +293,13 @@ class DoliApi {
 			'lines' => $lines,
 			'model_pdf' => $modelPdf ?? Config::DOLI_DEFAULT_MODEL_PDF
 		] );
+		
+		$i = self::callAPI('POST', "invoices/$id/validate");
+
+		return self::formatClientInvoice($i);
+	}
+
+	public static function validateInvoice($id){
 		
 		$i = self::callAPI('POST', "invoices/$id/validate");
 
