@@ -6,9 +6,8 @@ use Config\Config;
 
 class DoliApi {
 
-	public static function callAPI($method, $url, object|array|bool $data = false)
+	public static function callAPI($method, $url, object|array|bool $data = false, bool $returnError = false)
 	{
-
 		// SWAGER: /api/index.php/explorer/
 		$url = Config::DOLI_URL . '/api/index.php/' . $url;
 
@@ -64,7 +63,7 @@ class DoliApi {
 		$obj = json_decode($result);
 
 		// Error
-		if (isset($obj->error))
+		if (isset($obj->error) && $returnError == false) 
 		{
 			throw new \Exception(json_encode($obj->error));
 		}
@@ -213,7 +212,7 @@ class DoliApi {
 
 	public static function getThirdPartyByEmail($email)
 	{
-		$tp = self::callAPI('GET', 'thirdparties/email/' . rawurlencode($email));
+		$tp = self::callAPI('GET', 'thirdparties/email/' . rawurlencode($email), false, true);
 
 		if (isset($tp->error)) return null;
 
