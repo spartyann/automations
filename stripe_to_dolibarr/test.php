@@ -6,6 +6,7 @@ require_once('vendor/autoload.php');
 use App\DoliApi;
 use App\Notifications\SlackHelper;
 use App\Tools;
+use App\WFDoliCBPayment;
 use App\WFDoliStripe;
 use Config\Config;
 
@@ -32,7 +33,7 @@ $invoiceLines= [
 
 try{
 
-	WFDoliStripe::processDoliInvoiceForStripePayment("Yann Tassy", 'tassy.yann@gmail.com', $invoiceLines, 900, time(),  "CODE STRIPE", 10.25);
+	WFDoliCBPayment::processDoliInvoiceForCBPayment("Yann Tassy", 'tassy.yann@gmail.com', $invoiceLines, 900, time(),  "CODE STRIPE", Config::CB_PROVIDERS['stripe'], 10.25);
 } catch (\Throwable $ex)
 {
 
@@ -41,12 +42,6 @@ try{
 
 //SlackHelper::sendError("testdf gsdg", "msg dfgsdfgsdfg sdfg sd");
 //$stripe = new \Stripe\StripeClient(Config::STRIPE_SECRET_KEY);
-
-exit(0);
-
-$inv = DoliApi::getSupplierInvoicesForTP(Config::DOLI_STRIPE_STP_ID);
-
-dd($inv);
 
 
 /*
