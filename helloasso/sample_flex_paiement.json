@@ -1,0 +1,78 @@
+{
+	"data": {
+		"payer": {
+			"email": "yann@spartyann.fr",
+			"address": "24B route des Masses",
+			"city": "Ubaye-Serre-Pon\u00e7on",
+			"zipCode": "04340",
+			"country": "FRA",
+			"firstName": "Tassy",
+			"lastName": "Yann"
+		},
+		"items": [
+			{
+				"payments": [
+					{
+						"id": 24335,
+						"shareAmount": 2000
+					}
+				],
+				"name": "Test",
+				"priceCategory": "Pwyw",
+				"minAmount": 100,
+				"qrCode": "Mzc0OTk6NjM4NzQ0MzYyNDE3NDEzODgw",
+				"dayOfLevy": 6,
+				"tierId": 6366,
+				"id": 37499,
+				"amount": 2000,
+				"type": "Payment",
+				"initialAmount": 0,
+				"state": "Processed"
+			}
+		],
+		"payments": [
+			{
+				"items": [
+					{
+						"id": 37499,
+						"shareAmount": 2000,
+						"shareItemAmount": 2000
+					}
+				],
+				"cashOutState": "Transfered",
+				"paymentReceiptUrl": "https:\/\/www.helloasso-sandbox.com\/associations\/la-voix-du-zen\/paiements\/test\/paiement-attestation\/37499",
+				"id": 24335,
+				"amount": 2000,
+				"date": "2025-02-06T10:58:08.1517368+01:00",
+				"paymentMeans": "Card",
+				"installmentNumber": 1,
+				"state": "Authorized",
+				"meta": {
+					"createdAt": "2025-02-06T10:57:21.741388+01:00",
+					"updatedAt": "2025-02-06T10:58:08.1841858+01:00"
+				},
+				"refundOperations": []
+			}
+		],
+		"amount": {
+			"total": 2000,
+			"vat": 0,
+			"discount": 0
+		},
+		"id": 37499,
+		"date": "2025-02-06T10:58:08.4816762+01:00",
+		"formSlug": "test",
+		"formType": "PaymentForm",
+		"organizationName": "La Voix du Zen",
+		"organizationSlug": "la-voix-du-zen",
+		"organizationType": "Association1901Rig",
+		"organizationIsUnderColucheLaw": false,
+		"meta": {
+			"createdAt": "2025-02-06T10:57:21.741388+01:00",
+			"updatedAt": "2025-02-06T10:58:08.4845809+01:00"
+		},
+		"isAnonymous": false,
+		"isAmountHidden": false
+	},
+	"eventType": "Order"
+}

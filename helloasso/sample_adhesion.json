@@ -1,0 +1,97 @@
+{
+	"data": {
+		"payer": {
+			"email": "contact+aude@lavoixduzen.fr",
+			"country": "FRA",
+			"firstName": "Aude",
+			"lastName": "Javel"
+		},
+		"items": [
+			{
+				"payments": [
+					{
+						"id": 23715,
+						"shareAmount": 1000
+					}
+				],
+				"name": "Adulte",
+				"user": {
+					"firstName": "Aude",
+					"lastName": "Javel"
+				},
+				"priceCategory": "Fixed",
+				"qrCode": "MzY0MDQ6NjM4NzM0MjM1ODA4NjI0OTM4",
+				"membershipCardUrl": "https:\/\/www.helloasso-sandbox.com\/associations\/la-voix-du-zen\/adhesions\/qigong-hebdomadaire\/carte-adherent?cardId=36404&ag=36404",
+				"tierId": 6160,
+				"id": 36404,
+				"amount": 1000,
+				"type": "Membership",
+				"initialAmount": 1000,
+				"state": "Processed"
+			},
+			{
+				"payments": [
+					{
+						"id": 23715,
+						"shareAmount": 500
+					}
+				],
+				"priceCategory": "Fixed",
+				"qrCode": "MzY0MDU6NjM4NzM0MjM1ODA4NjI0OTM4",
+				"id": 36405,
+				"amount": 500,
+				"type": "Donation",
+				"state": "Processed"
+			}
+		],
+		"payments": [
+			{
+				"items": [
+					{
+						"id": 36404,
+						"shareAmount": 1000,
+						"shareItemAmount": 1000
+					},
+					{
+						"id": 36405,
+						"shareAmount": 500,
+						"shareItemAmount": 500
+					}
+				],
+				"cashOutState": "Transfered",
+				"paymentReceiptUrl": "https:\/\/www.helloasso-sandbox.com\/associations\/la-voix-du-zen\/adhesions\/qigong-hebdomadaire\/paiement-attestation\/36404",
+				"id": 23715,
+				"amount": 1500,
+				"date": "2025-01-25T17:39:53.8354168+01:00",
+				"paymentMeans": "Card",
+				"installmentNumber": 1,
+				"state": "Authorized",
+				"meta": {
+					"createdAt": "2025-01-25T17:39:40.8624938+01:00",
+					"updatedAt": "2025-01-25T17:39:53.865356+01:00"
+				},
+				"refundOperations": []
+			}
+		],
+		"amount": {
+			"total": 1500,
+			"vat": 0,
+			"discount": 0
+		},
+		"id": 36404,
+		"date": "2025-01-25T17:39:54.0322012+01:00",
+		"formSlug": "qigong-hebdomadaire",
+		"formType": "Membership",
+		"organizationName": "La Voix du Zen",
+		"organizationSlug": "la-voix-du-zen",
+		"organizationType": "Association1901Rig",
+		"organizationIsUnderColucheLaw": false,
+		"meta": {
+			"createdAt": "2025-01-25T17:39:40.8624938+01:00",
+			"updatedAt": "2025-01-25T17:39:54.03917+01:00"
+		},
+		"isAnonymous": false,
+		"isAmountHidden": false
+	},
+	"eventType": "Order"
+}

@@ -1,0 +1,95 @@
+{
+	"data": {
+		"payer": {
+			"email": "megabuck.sylvain@gmail.com",
+			"country": "FRA",
+			"firstName": "Sylvain",
+			"lastName": "Pr\u00e9vost"
+		},
+		"items": [
+			{
+				"payments": [
+					{
+						"id": 24117,
+						"shareAmount": 2500
+					}
+				],
+				"name": "Cours de chant d\u00e9butant",
+				"priceCategory": "Fixed",
+				"qrCode": "MzcwNzE6NjM4NzQwMzU1NTIzNzA2NzM0",
+				"tierId": 6274,
+				"id": 37071,
+				"amount": 2500,
+				"type": "Product",
+				"initialAmount": 2500,
+				"state": "Processed"
+			},
+			{
+				"payments": [
+					{
+						"id": 24117,
+						"shareAmount": 5000
+					}
+				],
+				"name": "Cours de chant Interm\u00e9diaire",
+				"priceCategory": "Fixed",
+				"qrCode": "MzcwNzI6NjM4NzQwMzU1NTIzNzA2NzM0",
+				"tierId": 6275,
+				"id": 37072,
+				"amount": 5000,
+				"type": "Product",
+				"initialAmount": 5000,
+				"state": "Processed"
+			}
+		],
+		"payments": [
+			{
+				"items": [
+					{
+						"id": 37071,
+						"shareAmount": 2500,
+						"shareItemAmount": 2500
+					},
+					{
+						"id": 37072,
+						"shareAmount": 5000,
+						"shareItemAmount": 5000
+					}
+				],
+				"cashOutState": "Transfered",
+				"paymentReceiptUrl": "https:\/\/www.helloasso-sandbox.com\/associations\/la-voix-du-zen\/boutiques\/training-vocal\/paiement-attestation\/37071",
+				"id": 24117,
+				"amount": 7500,
+				"date": "2025-02-01T19:39:42.8015622+01:00",
+				"paymentMeans": "Card",
+				"installmentNumber": 1,
+				"state": "Authorized",
+				"meta": {
+					"createdAt": "2025-02-01T19:39:12.3706734+01:00",
+					"updatedAt": "2025-02-01T19:39:42.8346452+01:00"
+				},
+				"refundOperations": []
+			}
+		],
+		"amount": {
+			"total": 7500,
+			"vat": 0,
+			"discount": 0
+		},
+		"id": 37071,
+		"date": "2025-02-01T19:39:42.9908886+01:00",
+		"formSlug": "training-vocal",
+		"formType": "Shop",
+		"organizationName": "La Voix du Zen",
+		"organizationSlug": "la-voix-du-zen",
+		"organizationType": "Association1901Rig",
+		"organizationIsUnderColucheLaw": false,
+		"meta": {
+			"createdAt": "2025-02-01T19:39:12.3706734+01:00",
+			"updatedAt": "2025-02-01T19:39:43.0044743+01:00"
+		},
+		"isAnonymous": false,
+		"isAmountHidden": false
+	},
+	"eventType": "Order"
+}

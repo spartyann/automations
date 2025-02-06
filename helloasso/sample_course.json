@@ -1,0 +1,75 @@
+{
+ 
+	"data": {
+		"payer": {
+			"email": "yann@spartyann.fr",
+			"country": "FRA",
+			"firstName": "Yann\u00e9",
+			"lastName": "Tassy"
+		},
+		"items": [
+			{
+				"payments": [
+					{
+						"id": 24098,
+						"shareAmount": 2500
+					}
+				],
+				"name": "Cours de chant d\u00e9butant",
+				"priceCategory": "Fixed",
+				"qrCode": "MzcwMzc6NjM4NzQwMjA2NDk0OTE5ODE5",
+				"tierId": 6164,
+				"id": 37037,
+				"amount": 2500,
+				"type": "Product",
+				"initialAmount": 2500,
+				"state": "Processed"
+			}
+		],
+		"payments": [
+			{
+				"items": [
+					{
+						"id": 37037,
+						"shareAmount": 2500,
+						"shareItemAmount": 2500
+					}
+				],
+				"cashOutState": "Transfered",
+				"paymentReceiptUrl": "https:\/\/www.helloasso-sandbox.com\/associations\/la-voix-du-zen\/boutiques\/training-vocal\/paiement-attestation\/37037",
+				"id": 24098,
+				"amount": 2500,
+				"date": "2025-02-01T15:31:11.7323913+01:00",
+				"paymentMeans": "Card",
+				"installmentNumber": 1,
+				"state": "Authorized",
+				"meta": {
+					"createdAt": "2025-02-01T15:30:49.4919819+01:00",
+					"updatedAt": "2025-02-01T15:31:11.7563468+01:00"
+				},
+				"refundOperations": []
+			}
+		],
+		"amount": {
+			"total": 2500,
+			"vat": 0,
+			"discount": 0
+		},
+		"id": 37037,
+		"date": "2025-02-01T15:31:11.8799214+01:00",
+		"formSlug": "training-vocal",
+		"formType": "Shop",
+		"organizationName": "La Voix du Zen",
+		"organizationSlug": "la-voix-du-zen",
+		"organizationType": "Association1901Rig",
+		"organizationIsUnderColucheLaw": false,
+		"meta": {
+			"createdAt": "2025-02-01T15:30:49.4919819+01:00",
+			"updatedAt": "2025-02-01T15:31:11.9005083+01:00"
+		},
+		"isAnonymous": false,
+		"isAmountHidden": false
+	},
+	"eventType": "Order"
+
+}
