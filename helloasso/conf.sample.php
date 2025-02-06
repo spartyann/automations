@@ -3,7 +3,7 @@
 
 define('SITE_TOKEN', 'xxxxxxxxxxxxx');
 
-define('SPREADSHEET_ID', '1fHkqamvPB2Nw1fQKyDbts9IUXBKk5ofSq44P5wxrONI');
+define('SPREADSHEET_ID', 'xxxxxxxxxxxxxxxxxx');
 
 define('COMPTA_LINE_START', 4);
 

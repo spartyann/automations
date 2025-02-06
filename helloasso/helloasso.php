@@ -10,14 +10,21 @@ error_reporting(E_ALL);
 require_once(__DIR__ . '/vendor/autoload.php');
 require_once(__DIR__ . '/conf.php');
 require_once(__DIR__ . '/lib.php');
+require_once(__DIR__ . '/lib_gsheet.php');
 
 // Get HelloAsso Data
 $body_content = file_get_contents('php://input');
-if($body_content == null || $body_content == '') $body_content = file_get_contents(__DIR__ . '/sample_course.json');
+if($body_content == null || $body_content == '')
+{
+	$body_content = file_get_contents(__DIR__ . '/sample_course.json');
+	$body_content = file_get_contents(__DIR__ . '/sample_adhesion.json');
+	$body_content = file_get_contents(__DIR__ . '/sample_flex_paiement.json');
+	//$body_content = file_get_contents(__DIR__ . '/sample_products.json');
+}
 
 
 $hellAssoData = json_decode($body_content);
-    
+
 try {
     
     if ($hellAssoData == null) throw new \Exception('Error deconding HelloAsso Data');
@@ -35,31 +42,39 @@ try {
     // Extract data from Hello Asso
     if ($hellAssoData->eventType == 'Order')
     {
+		// Do a backup of Compta sheet
+		backupSheet('-before');
+
         $firstName = $hellAssoData->data->payer->firstName;
         $lastName = $hellAssoData->data->payer->lastName;
         $email = $hellAssoData->data->payer->email;
-        
+
+		$tiers = $firstName . ' ' . $lastName;
         
         foreach ($hellAssoData->data->items as $item)
         {
+			$itemName = $item->name;
+
+			$price = $item->amount/100;
             
             if ($item->type == 'Product')
             {
-                $name = formatCourseName($item->name);
-            
-                if (isset($coursesIdByTitle[$name]))
+                $itemName = formatCourseName($item->name);
+				
+				$designation = 'Achat: ' . $itemName;
+				$orderPaymentId = 'helloasso';
+				$invoiceId = 'helloasso';
+		
+				foreach ($item->payments as $payment) {
+					$invoiceId .= '-' . $payment->id;
+					$orderPaymentId .= '-' . $payment->id;
+					$designation .= ' - ' . $payment->id;
+				}
+
+                if (isset($coursesIdByTitle[$itemName]))
                 {
-                    $courseId = $coursesIdByTitle[$name];
-                    $price = $item->amount/100;
-                    $orderPaymentId = 'helloasso';
-                    
-                    $invoiceId = 'helloasso';
-                    
-                    foreach ($item->payments as $payment) {
-                        $invoiceId .= '-' . $payment->id;
-                        $orderPaymentId .= '-' . $payment->id;
-                    }
-                    
+                    $courseId = $coursesIdByTitle[$itemName];
+
                     $newcoursepurchaseRes[] = callApi([
                         'task' => 'newcoursepurchase',
                         'course_id' => $courseId,
@@ -78,7 +93,24 @@ try {
             elseif ($item->type == 'Membership')  // Adhésion
             {
                 $createAccount = true;
+
+				$designation = 'Adhésion: ' . $itemName;
+				foreach ($item->payments as $payment) $designation .= ' - ' . $payment->id;
             }
+			elseif ($item->type == 'Donation')  // Adhésion
+            {
+                $createAccount = true;
+
+				$designation = 'Donation';
+				foreach ($item->payments as $payment) $designation .= ' - ' . $payment->id;
+            }
+			else
+			{
+				$designation = $item->type . ' - ' . $itemName;
+				foreach ($item->payments as $payment) $designation .= ' - ' . $payment->id;
+			}
+
+			addBillingLine(new \DateTime(), 'Helloasso', $designation, $tiers, $email, 0, $price);
             
         }
         
@@ -99,6 +131,8 @@ try {
         ]);
     }
     
+	// Do a backup of Compta sheet
+	//backupSheet();
 
     saveDebug([
         'createAccount' => $createAccount,
