@@ -18,7 +18,7 @@ if($body_content == null || $body_content == '')
 {
 	$body_content = file_get_contents(__DIR__ . '/sample_course.json');
 	$body_content = file_get_contents(__DIR__ . '/sample_adhesion.json');
-	$body_content = file_get_contents(__DIR__ . '/sample_flex_paiement.json');
+	//$body_content = file_get_contents(__DIR__ . '/sample_flex_paiement.json');
 	//$body_content = file_get_contents(__DIR__ . '/sample_products.json');
 }
 
@@ -43,7 +43,7 @@ try {
     if ($hellAssoData->eventType == 'Order')
     {
 		// Do a backup of Compta sheet
-		backupSheet('-before');
+		backupComptaSheet('-before');
 
         $firstName = $hellAssoData->data->payer->firstName;
         $lastName = $hellAssoData->data->payer->lastName;
@@ -53,7 +53,7 @@ try {
         
         foreach ($hellAssoData->data->items as $item)
         {
-			$itemName = $item->name;
+			$itemName = isset($item->name) ? $item->name : '';
 
 			$price = $item->amount/100;
             
@@ -95,7 +95,14 @@ try {
                 $createAccount = true;
 
 				$designation = 'Adhésion: ' . $itemName;
-				foreach ($item->payments as $payment) $designation .= ' - ' . $payment->id;
+				$paymentInfos = 'Helloasso: '. $itemName;
+
+				foreach ($item->payments as $payment) {
+					$designation .= ' - ' . $payment->id;
+					$paymentInfos .= ' - ' . $payment->id;
+				}
+
+				addAdhesionLine(new \DateTime(), $firstName, $lastName, $email, $price, $paymentInfos, '');
             }
 			elseif ($item->type == 'Donation')  // Adhésion
             {

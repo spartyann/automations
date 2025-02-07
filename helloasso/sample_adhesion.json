@@ -1,10 +1,10 @@
 {
 	"data": {
 		"payer": {
-			"email": "contact+aude@lavoixduzen.fr",
+			"email": "yann@spartyann.fr",
 			"country": "FRA",
-			"firstName": "Aude",
-			"lastName": "Javel"
+			"firstName": "Yann",
+			"lastName": "Tassy"
 		},
 		"items": [
 			{
@@ -16,8 +16,8 @@
 				],
 				"name": "Adulte",
 				"user": {
-					"firstName": "Aude",
-					"lastName": "Javel"
+					"firstName": "Yann",
+					"lastName": "Tassy"
 				},
 				"priceCategory": "Fixed",
 				"qrCode": "MzY0MDQ6NjM4NzM0MjM1ODA4NjI0OTM4",
