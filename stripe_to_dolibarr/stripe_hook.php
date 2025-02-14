@@ -61,6 +61,7 @@ switch ($event->type) {
 		} catch (\Throwable $ex)
 		{
 			SlackHelper::sendError('Erreur', $ex->getMessage());
+			SlackHelper::sendError('Erreur', $ex->getTraceAsString());
 		}
     }
 }
