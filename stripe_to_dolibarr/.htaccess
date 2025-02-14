@@ -1,0 +1,10 @@
+Deny From All
+
+
+<FilesMatch "^stripe_hook\.php$">
+    Allow From All
+</FilesMatch>
+
+<FilesMatch "^index\.php$">
+    Allow From All
+</FilesMatch>
