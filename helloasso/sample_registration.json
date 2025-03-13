@@ -1,0 +1,87 @@
+{
+	"data": {
+		"payer": {
+			"email": "yann@lavoixduzen.fr",
+			"country": "FRA",
+			"firstName": "Yann",
+			"lastName": "Tassy"
+		},
+		"items": [
+			{
+				"payments": [
+					{
+						"id": 25802,
+						"shareAmount": 1000
+					}
+				],
+				"name": "Cours Qigong",
+				"user": {
+					"firstName": "Yann",
+					"lastName": "Tassy"
+				},
+				"priceCategory": "Pwyw",
+				"minAmount": 0,
+				"customFields": [
+					{
+						"id": 4488,
+						"name": "Mobile",
+						"type": "Phone",
+						"answer": "06 51 37 63 20"
+					}
+				],
+				"qrCode": "NDAxNjk6NjM4Nzc0NjUzNjUxNjQ1MTU5",
+				"tierDescription": "Ce tarif inclut l'adh\u00e9sion pour 1 an et le cours",
+				"tierId": 6471,
+				"id": 40169,
+				"amount": 1000,
+				"type": "Registration",
+				"initialAmount": 0,
+				"state": "Processed"
+			}
+		],
+		"payments": [
+			{
+				"items": [
+					{
+						"id": 40169,
+						"shareAmount": 1000,
+						"shareItemAmount": 1000
+					}
+				],
+				"cashOutState": "Transfered",
+				"paymentReceiptUrl": "https:\/\/www.helloasso-sandbox.com\/associations\/la-voix-du-zen\/evenements\/cours-de-qigong\/paiement-attestation\/40169",
+				"id": 25802,
+				"amount": 1000,
+				"date": "2025-03-13T12:22:58.6037401+01:00",
+				"paymentMeans": "Card",
+				"installmentNumber": 1,
+				"state": "Authorized",
+				"meta": {
+					"createdAt": "2025-03-13T12:22:45.1645159+01:00",
+					"updatedAt": "2025-03-13T12:22:58.6191989+01:00"
+				},
+				"refundOperations": []
+			}
+		],
+		"amount": {
+			"total": 1000,
+			"vat": 0,
+			"discount": 0
+		},
+		"id": 40169,
+		"date": "2025-03-13T12:22:58.7650986+01:00",
+		"formSlug": "cours-de-qigong",
+		"formType": "Event",
+		"organizationName": "La Voix du Zen",
+		"organizationSlug": "la-voix-du-zen",
+		"organizationType": "Association1901Rig",
+		"organizationIsUnderColucheLaw": false,
+		"meta": {
+			"createdAt": "2025-03-13T12:22:45.1645159+01:00",
+			"updatedAt": "2025-03-13T12:22:58.7717046+01:00"
+		},
+		"isAnonymous": false,
+		"isAmountHidden": false
+	},
+	"eventType": "Order"
+}

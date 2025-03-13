@@ -10,6 +10,7 @@ error_reporting(E_ALL);
 require_once(__DIR__ . '/vendor/autoload.php');
 require_once(__DIR__ . '/conf.php');
 require_once(__DIR__ . '/lib.php');
+require_once(__DIR__ . '/notifs.php');
 require_once(__DIR__ . '/lib_gsheet.php');
 
 // Get HelloAsso Data
@@ -20,6 +21,8 @@ if($body_content == null || $body_content == '')
 	$body_content = file_get_contents(__DIR__ . '/sample_adhesion.json');
 	//$body_content = file_get_contents(__DIR__ . '/sample_flex_paiement.json');
 	//$body_content = file_get_contents(__DIR__ . '/sample_products.json');
+	$body_content = file_get_contents(__DIR__ . '/sample_registration.json');
+	
 }
 
 
@@ -50,10 +53,24 @@ try {
         $email = $hellAssoData->data->payer->email;
 
 		$tiers = $firstName . ' ' . $lastName;
+
+		$formSlug = $hellAssoData->data->formSlug;
         
         foreach ($hellAssoData->data->items as $item)
         {
 			$itemName = isset($item->name) ? $item->name : '';
+			$mobile = '';
+			$customFieldsString = '';
+
+			if (isset($item->customFields)){
+
+				foreach($item->customFields as $customField)
+				{
+					if ($customFieldsString != '') $customFieldsString .= ' - ';
+					$customFieldsString .= $customField->name . ': ' . $customField->answer;
+					if ($customField->name == "Mobile") $mobile = $customField->answer;
+				}
+			}
 
 			$price = $item->amount/100;
             
@@ -88,7 +105,8 @@ try {
                         'orderPaymentPrice' => $price,
                     ]);
                 }
-                
+
+				sendNotif("Nouvel Achat\n$firstName $lastName $mobile\n$email\n$itemName");
             }
             elseif ($item->type == 'Membership')  // Adhésion
             {
@@ -102,22 +120,45 @@ try {
 					$paymentInfos .= ' - ' . $payment->id;
 				}
 
-				addAdhesionLine(new \DateTime(), $firstName, $lastName, $email, $price, $paymentInfos, '');
+				sendNotif("Nouvelle Adhésion\n$firstName $lastName $mobile\n$email");
+				addAdhesionLine(new \DateTime(), $firstName, $lastName, $email, $mobile, $price, $paymentInfos, $customFieldsString);
             }
-			elseif ($item->type == 'Donation')  // Adhésion
+			elseif ($item->type == 'Donation')  // Donation
             {
                 $createAccount = true;
 
 				$designation = 'Donation';
 				foreach ($item->payments as $payment) $designation .= ' - ' . $payment->id;
+
+				sendNotif("Nouvelle Donation\n$firstName $lastName $mobile\n$email");
+            }
+            elseif ($item->type == 'Registration')  // Billeterie
+            {
+                $createAccount = true;
+
+				$designation = 'Billeterie: ' . $formSlug . ' - ' . $itemName;
+				$paymentInfos = 'Helloasso: '. $formSlug . ' - ' . $itemName;
+
+				foreach ($item->payments as $payment) {
+					$designation .= ' - ' . $payment->id;
+					$paymentInfos .= ' - ' . $payment->id;
+				}
+
+				if (isset($item->tierDescription) && str_contains($item->tierDescription, 'adhésion'))
+				{
+					addAdhesionLine(new \DateTime(), $firstName, $lastName, $email, $mobile, $price, $paymentInfos, $customFieldsString);
+				}
+
+				sendNotif("Nouvelle INSCRIPTION\n$formSlug - $itemName\n$firstName $lastName $mobile\n$email");
+				addBilletterieLine(new \DateTime(), $firstName, $lastName, $email, $mobile, $formSlug, $itemName, $price, $paymentInfos, $customFieldsString);
             }
 			else
 			{
-				$designation = $item->type . ' - ' . $itemName;
+				$designation = $item->type . ' - ' . $formSlug . ' - ' . $itemName;
 				foreach ($item->payments as $payment) $designation .= ' - ' . $payment->id;
 			}
 
-			addBillingLine(new \DateTime(), 'Helloasso', $designation, $tiers, $email, 0, $price);
+			addBillingLine(new \DateTime(), 'Helloasso', $designation, $tiers, $email, $mobile, 0, $price, $customFieldsString);
             
         }
         

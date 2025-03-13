@@ -5,13 +5,21 @@ define('SITE_TOKEN', 'xxxxxxxxxxxxx');
 
 define('SPREADSHEET_COMPTA_ID', 'xxxxxx');
 define('SPREADSHEET_ADHESION_ID', 'xxxxx');
+define('SPREADSHEET_BILLETTERIE_ID', 'xxxxx');
 
 define('SHEET_COMPTA_ID', 0);
 define('SHEET_ADHESION_ID', 0);
+define('SHEET_BILLETTERIE_ID', 0);
 
 define('COMPTA_LINE_START', 4);
 define('ADHESION_LINE_START', 4);
+define('BILLETTERIE_LINE_START', 4);
 
+define('TELEGRAM_NOTIFS', [
+	// Bot Api Key => [ '<Chat IDS>' ]
+	'<api Key>' => [ '00000', '00001']
+	]
+);
 
 define('GOOGLE_CONF_AUTH', [
 	"type" => "service_account",

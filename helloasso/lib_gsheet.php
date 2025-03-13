@@ -129,16 +129,22 @@ function sheetInsertLine($spreadsheetId, $sheetId, $rowIndexStart, array $line){
 
 
 
-function addBillingLine(\DateTime $date, string $operationTypeName, string $designation, string $tiersName, string $email, float $debit, float $credit)
+function addBillingLine(\DateTime $date, string $operationTypeName, string $designation, string $tiersName, string $email, string $mobile, float $debit, float $credit, string $comment)
 {
 	sheetInsertLine(SPREADSHEET_COMPTA_ID, SHEET_COMPTA_ID, COMPTA_LINE_START, [
-		$date->format("d/m/Y"), $operationTypeName, $designation, $tiersName, $email,
+		stringValue($date->format("d/m/Y")),
+		stringValue($operationTypeName),
+		stringValue($designation),
+		stringValue($tiersName),
+		stringValue($email),
+		stringValue($mobile),
 		$debit == 0 ? '' : $debit,
-	 	$credit == 0 ? '' : $credit
+	 	$credit == 0 ? '' : $credit,
+		stringValue($comment)
 	]);
 }
 
-function addAdhesionLine(\DateTime $date, string $firstName, string $lastName, string $email, float $price, string $paymentInfos, string $comment)
+function addAdhesionLine(\DateTime $date, string $firstName, string $lastName, string $email, string $mobile, float $price, string $paymentInfos, string $comment)
 {
 	global $service;
 
@@ -148,12 +154,31 @@ function addAdhesionLine(\DateTime $date, string $firstName, string $lastName, s
 		stringValue($firstName),
 		stringValue($lastName),
 		stringValue($email),
+		stringValue($mobile),
 		false,
 		false,
 		stringValue($date->format("d/m/Y")),
-		formulaValue('=IF(F5 = ""; ""; IF(EDATE(F5; 12) <= TODAY(); "Expiré"; "Actif"))'),
+		formulaValue('=IF(G5 = ""; ""; IF(EDATE(G5; 12) <= TODAY(); "Expiré"; "Actif"))'),
 		$price,
-		stringValue($paymentInfos)
+		stringValue($paymentInfos),
+		stringValue($comment)
 	]);
 	
+}
+
+
+function addBilletterieLine(\DateTime $date, string $firstName, string $lastName, string $email, string $mobile, string $billeterie, string $event, float $price, string $paymentInfos, string $comment)
+{
+	sheetInsertLine(SPREADSHEET_BILLETTERIE_ID, SHEET_BILLETTERIE_ID, BILLETTERIE_LINE_START, [
+		stringValue($firstName),
+		stringValue($lastName),
+		stringValue($email),
+		stringValue($mobile),
+		stringValue($date->format("d/m/Y")),
+		stringValue($billeterie),
+		stringValue($event),
+		$price,
+		stringValue($paymentInfos),
+		stringValue($comment)
+	]);
 }
