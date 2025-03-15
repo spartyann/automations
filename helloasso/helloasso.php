@@ -125,7 +125,7 @@ try {
             }
 			elseif ($item->type == 'Donation')  // Donation
             {
-                $createAccount = true;
+                $createAccount = false;
 
 				$designation = 'Donation';
 				foreach ($item->payments as $payment) $designation .= ' - ' . $payment->id;
