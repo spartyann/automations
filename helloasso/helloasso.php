@@ -202,6 +202,8 @@ try {
 } catch (\Throwable $th) {
     
     // ========================= TODO ERROR
+    
+    sendNotif("ERROR\n" . $th->getMessage());
 	
 	saveDebug([
         'GET' => $_GET,    
