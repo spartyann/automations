@@ -1,0 +1,5 @@
+Deny From All
+
+<FilesMatch "^helloasso\.php$">
+    Allow From All
+</FilesMatch>
