@@ -167,7 +167,7 @@ function addAdhesionLine(\DateTime $date, string $firstName, string $lastName, s
 }
 
 
-function addBilletterieLine(\DateTime $date, string $firstName, string $lastName, string $email, string $mobile, string $billeterie, string $event, float $price, string $paymentInfos, string $comment)
+function addBilletterieLine(\DateTime $date, string $firstName, string $lastName, string $email, string $mobile, string $courseDate, string $billeterie, string $event, float $price, string $paymentInfos, string $comment)
 {
 	sheetInsertLine(SPREADSHEET_BILLETTERIE_ID, SHEET_BILLETTERIE_ID, BILLETTERIE_LINE_START, [
 		stringValue($firstName),
@@ -175,6 +175,7 @@ function addBilletterieLine(\DateTime $date, string $firstName, string $lastName
 		stringValue($email),
 		stringValue($mobile),
 		stringValue($date->format("d/m/Y")),
+		stringValue($courseDate),
 		stringValue($billeterie),
 		stringValue($event),
 		$price,

@@ -61,6 +61,7 @@ try {
 			$itemName = isset($item->name) ? $item->name : '';
 			$mobile = '';
 			$customFieldsString = '';
+			$courseDateText = '';
 
 			if (isset($item->customFields)){
 
@@ -68,7 +69,23 @@ try {
 				{
 					if ($customFieldsString != '') $customFieldsString .= ' - ';
 					$customFieldsString .= $customField->name . ': ' . $customField->answer;
+
+					// Mobile
 					if ($customField->name == "Mobile") $mobile = $customField->answer;
+
+					// Create account online
+					if (str_contains($customField->name, 'compte') && str_contains($customField->name, 'lavoixduzen.fr'))
+					{
+						if ($customField->answer == "Oui") $createAccount = true;
+					}
+
+					// Course chosen by client
+					if (str_contains($customField->name, 'cours') && str_contains($customField->name, 'participer'))
+					{
+						$courseDateText = $customField->answer;
+					}
+
+					 
 				}
 			}
 
@@ -110,7 +127,6 @@ try {
             }
             elseif ($item->type == 'Membership')  // Adhésion
             {
-                $createAccount = true;
 
 				$designation = 'Adhésion: ' . $itemName;
 				$paymentInfos = 'Helloasso: '. $itemName;
@@ -125,8 +141,6 @@ try {
             }
 			elseif ($item->type == 'Donation')  // Donation
             {
-                $createAccount = false;
-
 				$designation = 'Donation';
 				foreach ($item->payments as $payment) $designation .= ' - ' . $payment->id;
 
@@ -134,8 +148,6 @@ try {
             }
             elseif ($item->type == 'Registration')  // Billeterie
             {
-                $createAccount = true;
-
 				$designation = 'Billeterie: ' . $formSlug . ' - ' . $itemName;
 				$paymentInfos = 'Helloasso: '. $formSlug . ' - ' . $itemName;
 
@@ -150,7 +162,7 @@ try {
 				}
 
 				sendNotif("Nouvelle INSCRIPTION\n$formSlug - $itemName\n$firstName $lastName $mobile\n$email");
-				addBilletterieLine(new \DateTime(), $firstName, $lastName, $email, $mobile, $formSlug, $itemName, $price, $paymentInfos, $customFieldsString);
+				addBilletterieLine(new \DateTime(), $firstName, $lastName, $email, $mobile, $courseDateText, $formSlug, $itemName, $price, $paymentInfos, $customFieldsString);
             }
 			else
 			{
