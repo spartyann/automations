@@ -6,8 +6,8 @@ class Stop extends \Exception {
 
 function callApi($params)
 {
-    $params['option'] = $params['option'] ?? 'com_tylms';
-    $params['controller'] = $params['controller'] ?? 'api';
+    $params['option'] = $params['option'] ?? 'com_tyasso';
+    $params['controller'] = $params['controller'] ?? 'techapi';
     $params['format'] = $params['format'] ?? 'json';
     $params['token'] = $params['token'] ?? SITE_TOKEN;
     

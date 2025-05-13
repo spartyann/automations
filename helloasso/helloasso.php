@@ -33,7 +33,7 @@ try {
     if ($hellAssoData == null) throw new \Exception('Error deconding HelloAsso Data');
     
     // Get all Course and class by Name
-    $allCourses = callApi([ 'task' => 'getcourses' ]);
+    $allCourses = callApi([ 'option' => 'com_tylms', 'controller' => 'api', 'task' => 'getcourses' ]);
     $coursesIdByTitle = [];
     foreach($allCourses->courses as $course) $coursesIdByTitle[formatCourseName($course->title)] = $course->id;
     
@@ -110,6 +110,8 @@ try {
                     $courseId = $coursesIdByTitle[$itemName];
 
                     $newcoursepurchaseRes[] = callApi([
+						'option' => 'com_tylms',
+						'controller' => 'api',
                         'task' => 'newcoursepurchase',
                         'course_id' => $courseId,
                         'email' => $email,
@@ -188,6 +190,7 @@ try {
             'email' => $email,
             'first_name' => $firstName,
             'last_name' => $lastName,
+			'is_membership' => 1
         ]);
     }
     
